@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/components/tiles/categories_tiles.dart';
 import 'package:flutter/material.dart';
 
 class ProductsTab extends StatelessWidget {
@@ -14,9 +15,13 @@ class ProductsTab extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           else {
-            return ListView(
-              children: <Widget>[],
-            );
+            var divideTiles = ListTile.divideTiles(
+                    tiles: snapshot.data.documents.map((doc) {
+                      return CategorieTile(doc);
+                    }).toList(),
+                    color: Colors.grey[500])
+                .toList();
+            return ListView(children: divideTiles);
           }
         });
   }
