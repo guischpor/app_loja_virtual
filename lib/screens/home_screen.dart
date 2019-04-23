@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/components/custom_drawer.dart';
 import 'package:ecommerce_app/screens/tabs/home_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,11 @@ class HomeScreen extends StatelessWidget {
       controller: _pageController,
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        HomeTab(),
+        Scaffold(
+          body: HomeTab(),
+          drawer: CustomDrawer()
+        )
       ],
     );
   }
-
 }
