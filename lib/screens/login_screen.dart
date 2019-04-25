@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  //const LoginScreen({Key key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  GlobalKey<FormState> _formKey = GlobalKey();
+
   bool _validate = false;
+
+  final emailController = TextEditingController();
+
+  final senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +35,7 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
       body: Form(
+        autovalidate: _validate,
         key: _formKey,
         child: ListView(
           padding: EdgeInsets.all(16.0),
@@ -32,10 +43,12 @@ class LoginScreen extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(hintText: 'E-mail'),
               keyboardType: TextInputType.emailAddress,
-              validator: (text) {
-                if (text.isEmpty || !text.contains("@"))
-                  return 'E-mail inválido!';
-              },
+              // validator: (text) {
+              //   if (text.isEmpty || !text.contains("@"))
+              //     return 'E-mail inválido!';
+              // },
+              validator: _validateEmail,
+              controller: emailController,
             ),
             SizedBox(
               height: 16.0,
@@ -43,9 +56,11 @@ class LoginScreen extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(hintText: 'Senha'),
               obscureText: true,
-              validator: (text) {
-                if (text.isEmpty || text.length < 6) return 'E-mail inválido!';
-              },
+              // validator: (text) {
+              //   if (text.isEmpty || text.length < 6) return 'Senha inválida!';
+              // },
+              validator: _validateSenha,
+              controller: senhaController,
             ),
             Align(
                 alignment: Alignment.centerRight,
@@ -70,7 +85,9 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                   } else {
-                    _validate = true;
+                    setState(() {
+                      _validate = true;
+                    });
                   }
                 },
               ),
@@ -79,5 +96,24 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _validateEmail(String text) {
+    if (text.length == 0 || !text.contains('@')) {
+      return 'E-mail Inválido';
+    } else {
+      return null;
+    }
+  }
+
+  String _validateSenha(String text) {
+    if (text.length == 0) {
+      return 'Preencha o Campo';
+    }
+    if (text.length < 6) {
+      return 'A senha deve ter no minimo 6 caracteres';
+    } else {
+      return null;
+    }
   }
 }
