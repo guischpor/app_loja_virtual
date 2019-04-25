@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,7 +31,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontSize: 15.0,
                 )),
             textColor: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => SignupScreen()));
+            },
           ),
         ],
       ),
