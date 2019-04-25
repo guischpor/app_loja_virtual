@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/models/user_model.dart';
 import 'package:ecommerce_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -38,66 +40,77 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      body: Form(
-        autovalidate: _validate,
-        key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.all(16.0),
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(hintText: 'E-mail'),
-              keyboardType: TextInputType.emailAddress,
-              // validator: (text) {
-              //   if (text.isEmpty || !text.contains("@"))
-              //     return 'E-mail inválido!';
-              // },
-              validator: _validateEmail,
-              controller: emailController,
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            TextFormField(
-              decoration: InputDecoration(hintText: 'Senha'),
-              obscureText: true,
-              // validator: (text) {
-              //   if (text.isEmpty || text.length < 6) return 'Senha inválida!';
-              // },
-              validator: _validateSenha,
-              controller: senhaController,
-            ),
-            Align(
-                alignment: Alignment.centerRight,
-                child: FlatButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {},
-                  child: Text(
-                    'Esquecei minha senha',
-                    textAlign: TextAlign.right,
-                  ),
-                )),
-            SizedBox(height: 16.0),
-            SizedBox(
-              height: 44.0,
-              child: RaisedButton(
-                child: Text(
-                  'Entrar',
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+      body: ScopedModelDescendant<UserModel>(
+        builder: (context, child, model) {
+          if (model.isLoading)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          return Form(
+            autovalidate: _validate,
+            key: _formKey,
+            child: ListView(
+              padding: EdgeInsets.all(16.0),
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(hintText: 'E-mail'),
+                  keyboardType: TextInputType.emailAddress,
+                  // validator: (text) {
+                  //   if (text.isEmpty || !text.contains("@"))
+                  //     return 'E-mail inválido!';
+                  // },
+                  validator: _validateEmail,
+                  controller: emailController,
                 ),
-                color: primaryColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                  } else {
-                    setState(() {
-                      _validate = true;
-                    });
-                  }
-                },
-              ),
-            )
-          ],
-        ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(hintText: 'Senha'),
+                  obscureText: true,
+                  // validator: (text) {
+                  //   if (text.isEmpty || text.length < 6) return 'Senha inválida!';
+                  // },
+                  validator: _validateSenha,
+                  controller: senhaController,
+                ),
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: FlatButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {},
+                      child: Text(
+                        'Esquecei minha senha',
+                        textAlign: TextAlign.right,
+                      ),
+                    )),
+                SizedBox(height: 16.0),
+                SizedBox(
+                  height: 44.0,
+                  child: RaisedButton(
+                    child: Text(
+                      'Entrar',
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    color: primaryColor,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      // if (_formKey.currentState.validate()) {
+
+                      // } else {
+                      //   setState(() {
+                      //     _validate = true;
+                      //   });
+                      // }
+                      model.signIn();
+                    },
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }
