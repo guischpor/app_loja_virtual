@@ -42,7 +42,24 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
           Padding(
             padding: EdgeInsets.all(16.0),
-          )
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  product.title,
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                  maxLines: 3,
+                ),
+                Text(
+                  "R\$ ${product.price.toStringAsFixed(2)}",
+                  style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
