@@ -79,7 +79,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: FlatButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_emailController.text.isEmpty)
+                          _scaffoldKey.currentState.showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Insira o seu email para recuperação de senha!'),
+                              backgroundColor: Colors.redAccent,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        else {
+                          model.recoverPass(_emailController.text);
+                          _scaffoldKey.currentState.showSnackBar(
+                            SnackBar(
+                              content: Text('Confira seu e-mail!'),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
                       child: Text(
                         'Esquecei minha senha',
                         textAlign: TextAlign.right,
@@ -134,8 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (text.length < 6) {
       return 'A senha deve ter no minimo 6 caracteres';
-    } 
-    else {
+    } else {
       return null;
     }
   }

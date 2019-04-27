@@ -10,8 +10,13 @@ class UserModel extends Model {
   FirebaseUser firebaseUser;
   Map<String, dynamic> userData = Map();
 
-  //usuario atual
   bool isLoading = false;
+
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+    _loadCurrentUser();
+  }
 
   //cadastro
   void signUp(
@@ -50,8 +55,11 @@ class UserModel extends Model {
     isLoading = true;
     notifyListeners();
 
-    _auth.signInWithEmailAndPassword(email: email, password: pass).then((user) {
+    _auth
+        .signInWithEmailAndPassword(email: email, password: pass)
+        .then((user) async {
       firebaseUser = user;
+      await _loadCurrentUser();
 
       onSuccess();
       print('entrou correto');
@@ -75,7 +83,10 @@ class UserModel extends Model {
   }
 
   //esqueceu a senha
-  void recoverPass() {}
+  void recoverPass(@required String email) {
+    _auth.sendPasswordResetEmail(email: email);
+    notifyListeners();
+  }
 
   //manter usuario logado
   bool isLoggedIn() {
@@ -90,4 +101,19 @@ class UserModel extends Model {
         .document(firebaseUser.uid)
         .setData(userData);
   }
+
+  Future<Null> _loadCurrentUser() async {
+    if (firebaseUser == null) firebaseUser = await _auth.currentUser();
+    if (firebaseUser != null) {
+      if (userData['name'] == null) {
+        DocumentSnapshot docUser = await Firestore.instance
+            .collection('users')
+            .document(firebaseUser.uid)
+            .get();
+        userData = docUser.data;
+      }
+    }
+  }
+
+  notifyListeners();
 }
