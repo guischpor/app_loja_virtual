@@ -12,17 +12,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKey = GlobalKey();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final _emailController = TextEditingController();
+  final _senhaController = TextEditingController();
 
   bool _validate = false;
-
-  final emailController = TextEditingController();
-
-  final senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Login'),
         centerTitle: true,
@@ -60,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   //     return 'E-mail inválido!';
                   // },
                   validator: _validateEmail,
-                  controller: emailController,
+                  controller: _emailController,
                 ),
                 SizedBox(
                   height: 16.0,
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   //   if (text.isEmpty || text.length < 6) return 'Senha inválida!';
                   // },
                   validator: _validateSenha,
-                  controller: senhaController,
+                  controller: _senhaController,
                 ),
                 Align(
                     alignment: Alignment.centerRight,
@@ -96,14 +97,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: primaryColor,
                     textColor: Colors.white,
                     onPressed: () {
-                      // if (_formKey.currentState.validate()) {
+                      if (_formKey.currentState.validate()) {
+                      } else {
+                        setState(() {
+                          _validate = true;
+                        });
+                      }
 
-                      // } else {
-                      //   setState(() {
-                      //     _validate = true;
-                      //   });
-                      // }
-                      model.signIn();
+                      model.signIn(
+                          email: _emailController.text,
+                          pass: _senhaController.text,
+                          onSuccess: _onSuccess,
+                          onFail: _onFail);
                     },
                   ),
                 )
@@ -129,8 +134,23 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (text.length < 6) {
       return 'A senha deve ter no minimo 6 caracteres';
-    } else {
+    } 
+    else {
       return null;
     }
+  }
+
+  void _onSuccess() {
+    Navigator.of(context).pop();
+  }
+
+  void _onFail() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text('Falha ao Entrar!'),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 }
