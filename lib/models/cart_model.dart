@@ -11,6 +11,8 @@ class CartModel extends Model {
   //cria a lista do carrinho de compras
   List<CartProduct> products = [];
 
+  bool isLoading = false;
+
   CartModel(this.user);
 
   static CartModel of(BuildContext context) =>
