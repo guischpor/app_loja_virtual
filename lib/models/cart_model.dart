@@ -13,6 +13,9 @@ class CartModel extends Model {
 
   CartModel(this.user);
 
+  static CartModel of(BuildContext context) =>
+      ScopedModel.of<CartModel>(context);
+
   void addCartItem(CartProduct cartProduct) {
     products.add(cartProduct);
 
