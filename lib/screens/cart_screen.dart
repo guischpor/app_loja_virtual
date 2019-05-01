@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/components/tiles/cart_tiles.dart';
 import 'package:ecommerce_app/models/cart_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
 import 'package:ecommerce_app/screens/login_screen.dart';
@@ -83,6 +84,17 @@ class CartScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
+            );
+            //4 - condição verifica quantos produtos ele possui no carrinho
+          } else {
+            return ListView(
+              children: <Widget>[
+                Column(
+                  children: model.products.map((product) {
+                    return CartTiles(product);
+                  }).toList(),
+                ),
+              ],
             );
           }
         },
