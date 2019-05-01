@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/components/cart_button.dart';
 import 'package:ecommerce_app/components/custom_drawer.dart';
 import 'package:ecommerce_app/screens/tabs/home_tab.dart';
 import 'package:ecommerce_app/screens/tabs/products_tab.dart';
@@ -12,7 +13,11 @@ class HomeScreen extends StatelessWidget {
       controller: _pageController,
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        Scaffold(body: HomeTab(), drawer: CustomDrawer(_pageController)),
+        Scaffold(
+          body: HomeTab(),
+          drawer: CustomDrawer(_pageController),
+          floatingActionButton: CartButton(),
+        ),
         Scaffold(
           appBar: AppBar(
             title: Text('Produtos'),
@@ -20,6 +25,7 @@ class HomeScreen extends StatelessWidget {
           ),
           drawer: CustomDrawer(_pageController),
           body: ProductsTab(),
+          floatingActionButton: CartButton(),
         ),
       ],
     );

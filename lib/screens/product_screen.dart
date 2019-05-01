@@ -3,6 +3,7 @@ import 'package:ecommerce_app/models/cart_model.dart';
 import 'package:ecommerce_app/models/cart_products.dart';
 import 'package:ecommerce_app/models/products_data.dart';
 import 'package:ecommerce_app/models/user_model.dart';
+import 'package:ecommerce_app/screens/cart_screen.dart';
 import 'package:ecommerce_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -118,6 +119,9 @@ class _ProductScreenState extends State<ProductScreen> {
                               cartProduct.category = product.category;
 
                               CartModel.of(context).addCartItem(cartProduct);
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => CartScreen()));
                             } else {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => LoginScreen()));

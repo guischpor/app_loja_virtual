@@ -3,7 +3,7 @@ import 'package:ecommerce_app/components/tiles/categories_tiles.dart';
 import 'package:flutter/material.dart';
 
 class ProductsTab extends StatelessWidget {
-  //const ProductsTab({Key key}) : super(key: key);
+  const ProductsTab({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
