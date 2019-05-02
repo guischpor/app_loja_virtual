@@ -114,4 +114,66 @@ class CartModel extends Model {
   double getDiscount() {
     return getProductsPrice() * discountPercentage / 100;
   }
+
+  Future<String> finishOrder() async {
+    //esse if verifica se a lista está vazia
+    if (products.length == 0) return null;
+
+    //isLoading indica que está carregando os dados do carrinho
+    isLoading = true;
+    notifyListeners();
+
+    double productPrice = getProductsPrice();
+    double shipPrice = getShipPrice();
+    double discount = getDiscount();
+
+    //salvando todos os dados do pedido como uma ordem de serviço
+    //o refOrder serve para buscar a referencia do id do produto para usa-lo depois
+    DocumentReference refOrder =
+        await Firestore.instance.collection('orders').add({
+      'clientId': user.firebaseUser.uid,
+      'products': products.map((cartProduct) => cartProduct.toMap()).toList(),
+      'shipPrice': shipPrice,
+      'productsPrine': productPrice,
+      'discount': discount,
+      'totalPrice': productPrice - discount + shipPrice,
+      'status': 1
+    });
+
+    //nessa função o id do pedido está sendo salvo dentro da pasta do usuário
+    await Firestore.instance
+        .collection('users')
+        .document(user.firebaseUser.uid)
+        .collection('orders')
+        .document(refOrder.documentID)
+        .setData({'orderId': refOrder.documentID});
+
+    //nessa função após a finalização do pedido, todos os produtos vão ser eliminados do carrinho
+    //No query vamos listar todos os produtos do carrinho
+    QuerySnapshot query = await Firestore.instance
+        .collection('users')
+        .document(user.firebaseUser.uid)
+        .collection('cart')
+        .getDocuments();
+
+    //nesse for vamos pegar cada item do carrinho e passar a referencia de dele e será deletado
+    for (DocumentSnapshot doc in query.documents) {
+      doc.reference.delete();
+    }
+    //limpar a lista local
+    products.clear();
+
+    //voltar o disconto para 0 e cupom
+    discountPercentage = 0;
+    couponCode = null;
+
+    //não estamos mais carregando
+    isLoading = false;
+
+    //para finalizar todos os procedimentos vamos notificar todos os listeners
+    notifyListeners();
+
+    //retorna o valor do id de numero de ordem
+    return refOrder.documentID;
+  }
 }
