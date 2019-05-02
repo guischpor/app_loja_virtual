@@ -14,6 +14,8 @@ class CartTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget _buidContent() {
+      //função retornada para atualizar o s preços no pedidos
+      CartModel.of(context).updatePrices();
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
