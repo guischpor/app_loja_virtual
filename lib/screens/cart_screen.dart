@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/components/discount_card.dart';
 import 'package:ecommerce_app/components/tiles/cart_tiles.dart';
 import 'package:ecommerce_app/models/cart_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
@@ -94,6 +95,7 @@ class CartScreen extends StatelessWidget {
                     return CartTiles(product);
                   }).toList(),
                 ),
+                DiscountCard(),
               ],
             );
           }
