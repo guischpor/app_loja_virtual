@@ -5,6 +5,7 @@ import 'package:ecommerce_app/components/tiles/cart_tiles.dart';
 import 'package:ecommerce_app/models/cart_model.dart';
 import 'package:ecommerce_app/models/user_model.dart';
 import 'package:ecommerce_app/screens/login_screen.dart';
+import 'package:ecommerce_app/screens/order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -103,6 +104,8 @@ class CartScreen extends StatelessWidget {
                   //se tudo der certo, nos teremos o id, se não nos teremos null
                   String orderId = await model.finishOrder();
                   if (orderId != null) print(orderId);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => OrderScreen(orderId)));
                 })
               ],
             );
