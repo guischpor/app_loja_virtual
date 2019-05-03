@@ -25,6 +25,8 @@ class OrderTile extends StatelessWidget {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
             else {
+              int status = snapshot.data['status'];
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -36,6 +38,46 @@ class OrderTile extends StatelessWidget {
                     height: 4.0,
                   ),
                   Text(_buildProductsText(snapshot.data)),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Text(
+                    'Status do pedido:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _buidCircle(
+                          status: status,
+                          subtitle: 'Preparação',
+                          thisStatus: 1,
+                          title: '1'),
+                      Container(
+                        height: 1.0,
+                        width: 40.0,
+                        color: Colors.grey[500],
+                      ),
+                      _buidCircle(
+                          status: status,
+                          subtitle: 'Transporte',
+                          thisStatus: 2,
+                          title: '2'),
+                      Container(
+                        height: 1.0,
+                        width: 40.0,
+                        color: Colors.grey[500],
+                      ),
+                      _buidCircle(
+                          status: status,
+                          subtitle: 'Entrega',
+                          thisStatus: 3,
+                          title: '3'),
+                    ],
+                  )
                 ],
               );
             }
@@ -45,6 +87,7 @@ class OrderTile extends StatelessWidget {
     );
   }
 
+  //função que constroe o texto do produto
   String _buildProductsText(DocumentSnapshot snapshot) {
     String text = 'Descrição:\n';
     for (LinkedHashMap p in snapshot.data['products']) {
@@ -54,5 +97,60 @@ class OrderTile extends StatelessWidget {
 
     text += "Total: R\$ ${snapshot.data['totalPrice'].toStringAsFixed(2)}";
     return text;
+  }
+
+  //Widget de progresso do pedido
+  Widget _buidCircle(
+      {@required String title,
+      @required String subtitle,
+      @required int status,
+      @required int thisStatus}) {
+    Color backColor;
+    Widget child;
+
+    //1-possibilidade do status ser menor que o thisStatus
+    if (status < thisStatus) {
+      backColor = Colors.grey[500];
+      child = Text(
+        title,
+        style: TextStyle(color: Colors.white),
+      );
+    }
+    //2 - possibilidade do status ser iguaL ao thisStatus
+    else if (status == thisStatus) {
+      backColor = Colors.blue;
+      child = Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(color: Colors.white),
+          ),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          )
+        ],
+      );
+    }
+    //3 - possibilidade, caso o pedido esteja concluido o circulo ficará verde
+    else {
+      backColor = Colors.green;
+      child = Icon(
+        Icons.check,
+        color: Colors.white,
+      );
+    }
+
+    //retornando a construção do widget
+    return Column(
+      children: <Widget>[
+        CircleAvatar(
+          radius: 20.0,
+          backgroundColor: backColor,
+          child: child,
+        ),
+        Text(subtitle)
+      ],
+    );
   }
 }
