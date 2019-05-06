@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## Getting Started
 
-Esse projeto é um modelo de Ecommerce feito em Flutter usando como back o firestore.
+Esse projeto é um modelo de Ecommerce feito em Flutter usando como banco de dados o firestore.
 
 Em breve mais imagens e views das telas.
 
