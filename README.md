@@ -4,9 +4,9 @@ A new Flutter project.
 
 ## Getting Started
 
-Esse projeto é um modelo de Ecommerce feito em Flutter usando como banco de dados o firestore.
+Esse projeto é um modelo de Ecommerce construindo em Flutter, usei como banco de dados o firestore.
 
-Em breve mais imagens e views das telas.
+### Imagens do App da Loja Virtual
 
 Download da apk para teste da Loja Virtual
 
