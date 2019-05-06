@@ -1,6 +1,6 @@
-# App loja_virtual_flutter
+# App Loja Virtual
 
-A new Flutter project.
+App construído em Flutter.
 
 ## Getting Started
 
