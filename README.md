@@ -6,9 +6,7 @@ App construído em Flutter.
 
 Esse projeto é um modelo de Ecommerce construído em Flutter, usei como banco de dados o firestore.
 
-Download da apk - Loja Virtual
-
-https://drive.google.com/file/d/15EIM9HiiawWnf6jeLpDBAlDZ3OT18-e9/view?usp=sharing
+- [Download da apk - Loja Virtual](https://drive.google.com/file/d/15EIM9HiiawWnf6jeLpDBAlDZ3OT18-e9/view?usp=sharing)
 
 ### Imagens do App da Loja Virtual
 
